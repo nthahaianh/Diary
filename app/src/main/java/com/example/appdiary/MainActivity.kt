@@ -19,6 +19,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import com.example.appdiary.Adapter.DayInWeekAdapter
+import com.example.appdiary.Adapter.ViewPagerAdapter
+import com.example.appdiary.Model.MyDate
+import com.example.appdiary.Model.MyDiary
+import com.example.appdiary.SQLite.SQLHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_password.*
 import java.io.FileReader
@@ -186,11 +191,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun encode(str: String):String {
+    private fun encode(str: String):String {
         var charset = "UTF-8"
         return URLEncoder.encode(str,charset)
     }
-    fun decode(str: String):String{
+    private fun decode(str: String):String{
         var charset = "UTF-8"
         return URLDecoder.decode(str,charset)
     }

@@ -6,12 +6,15 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.appdiary.Model.MyDate
+import com.example.appdiary.Model.MyDiary
+import com.example.appdiary.SQLite.SQLHelper
 import kotlinx.android.synthetic.main.activity_create.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CreateActivity : AppCompatActivity() {
-    lateinit var sqlHelper:SQLHelper
+    lateinit var sqlHelper: SQLHelper
     var day = 1
     var month = 0
     var year = 2000
@@ -34,10 +37,10 @@ class CreateActivity : AppCompatActivity() {
             var df = SimpleDateFormat("yyyyMMddHHmmss")
             val time: String = df.format(Calendar.getInstance().time)
             val myDate = MyDate(year,month,day)
-            val newDiary=MyDiary(time,myDate,create_etTitle.text.toString(),create_etContent.text.toString())
+            val newDiary= MyDiary(time,myDate,create_etTitle.text.toString(),create_etContent.text.toString())
             sqlHelper.insertUser(newDiary)
-            finishAffinity()
             startActivity(Intent(this,MainActivity::class.java))
+            finishAffinity()
         }
 
         create_tvDate.setOnClickListener {

@@ -1,4 +1,4 @@
-package com.example.appdiary
+package com.example.appdiary.Adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,6 +7,9 @@ import android.graphics.Color
 import android.view.*
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.appdiary.Model.MyDate
+import com.example.appdiary.Model.MyDiary
+import com.example.appdiary.R
 
 class CalendarAdapter(
         private var list: MutableList<MyDate>,
@@ -18,8 +21,6 @@ class CalendarAdapter(
     var position0 = -1
     var position1 = -1
     var position2 = -1
-    //    lateinit var sqlHelper:SQLHelper
-//    lateinit var diaryList:List<MyDiary>
     lateinit var context: Context
     lateinit var itemClick:(position:Int)->Unit
     fun setCallBack(click:(position:Int)->Unit){

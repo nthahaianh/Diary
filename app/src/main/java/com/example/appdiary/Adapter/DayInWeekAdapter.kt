@@ -1,10 +1,11 @@
-package com.example.appdiary
+package com.example.appdiary.Adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.appdiary.R
 
 class DayInWeekAdapter(private var list: MutableList<String>) :
     RecyclerView.Adapter<DayInWeekAdapter.ViewHolder>() {

@@ -1,4 +1,4 @@
-package com.example.appdiary
+package com.example.appdiary.Model
 
 import java.text.SimpleDateFormat
 import java.util.*

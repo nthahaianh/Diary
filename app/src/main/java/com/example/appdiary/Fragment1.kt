@@ -11,6 +11,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.appdiary.Adapter.CalendarAdapter
+import com.example.appdiary.Model.MyDate
+import com.example.appdiary.Model.MyDiary
+import com.example.appdiary.SQLite.SQLHelper
 import kotlinx.android.synthetic.main.fragment1.*
 import java.util.*
 

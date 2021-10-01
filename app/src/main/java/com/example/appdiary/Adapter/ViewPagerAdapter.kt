@@ -1,9 +1,10 @@
-package com.example.appdiary
+package com.example.appdiary.Adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.appdiary.Fragment1
 import java.util.*
 
 class ViewPagerAdapter(

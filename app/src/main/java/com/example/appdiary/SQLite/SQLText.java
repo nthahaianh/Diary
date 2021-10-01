@@ -1,4 +1,4 @@
-package com.example.appdiary;
+package com.example.appdiary.SQLite;
 
 public class SQLText {
     static final String T_DIARY_ID = "id";

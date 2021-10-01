@@ -2,6 +2,7 @@ package com.example.appdiary
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -28,13 +29,15 @@ class CreateActivity : AppCompatActivity() {
 
         sqlHelper = SQLHelper(baseContext)
 
+        create_ivClose.setOnClickListener { finish() }
         create_btnSave.setOnClickListener {
             var df = SimpleDateFormat("yyyyMMddHHmmss")
             val time: String = df.format(Calendar.getInstance().time)
             val myDate = MyDate(year,month,day)
             val newDiary=MyDiary(time,myDate,create_etTitle.text.toString(),create_etContent.text.toString())
             sqlHelper.insertUser(newDiary)
-            finish()
+            finishAffinity()
+            startActivity(Intent(this,MainActivity::class.java))
         }
 
         create_tvDate.setOnClickListener {

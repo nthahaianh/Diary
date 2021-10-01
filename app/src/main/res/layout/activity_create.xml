@@ -4,51 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
     android:background="@color/white"
+    android:padding="5dp"
     tools:context=".CreateActivity">
+
+    <ImageView
+        android:id="@+id/create_ivClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="6dp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
 
     <EditText
         android:id="@+id/create_etTitle"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/ic_sticky_note"
         android:drawableTint="@color/black"
+        android:layout_marginTop="10dp"
         android:hint="Title"
         android:textColor="@color/black"
         android:textColorHint="@color/grey_hint"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/create_ivClose"/>
 
     <TextView
         android:id="@+id/create_tvDate"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="00/00/0000"
         android:textColor="@color/black"
         android:textSize="20dp"
-        android:text="00/00/0000"
-        app:layout_constraintTop_toBottomOf="@id/create_etTitle"/>
+        android:padding="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_etTitle" />
+
     <EditText
         android:id="@+id/create_etContent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="5dp"
         android:backgroundTint="#00000000"
         android:gravity="top|left"
-        android:layout_margin="5dp"
         android:hint="Content"
         android:textColor="@color/black"
         android:textColorHint="@color/grey_hint"
-        app:layout_constraintTop_toBottomOf="@+id/create_tvDate"
-        app:layout_constraintBottom_toTopOf="@+id/create_btnSave"/>
+        app:layout_constraintBottom_toTopOf="@+id/create_btnSave"
+        app:layout_constraintTop_toBottomOf="@+id/create_tvDate" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/create_btnSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="15dp"
-        android:textColor="@color/black"
         android:background="@drawable/background"
-        android:text="Save"/>
+        android:text="Save"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

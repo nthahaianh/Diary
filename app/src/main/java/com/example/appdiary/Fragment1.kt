@@ -14,11 +14,14 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment1.*
 import java.util.*
 
+
 class Fragment1 : Fragment() {
     private var startWeek = 1
     private var month = Calendar.getInstance().get(Calendar.MONTH)
     private var year = Calendar.getInstance().get(Calendar.YEAR)
     private var dayList: MutableList<MyDate> = mutableListOf()
+    lateinit var sqlHelper: SQLHelper
+    var diaries: MutableList<MyDiary> = mutableListOf()
     lateinit var recyclerView:RecyclerView
     var view1:View?=null
 
@@ -35,16 +38,16 @@ class Fragment1 : Fragment() {
         args.putInt("startWeek", startWeek)
         args.putInt("month", month)
         args.putInt("year", year)
-        
+
         val fragment = Fragment1()
         fragment.arguments = args
         return fragment
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         var view = inflater.inflate(R.layout.fragment1, container, false)
         return view
@@ -52,6 +55,8 @@ class Fragment1 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sqlHelper = SQLHelper(context)
+        diaries = sqlHelper.getAll()
         view1 = view
         recyclerView = rv_calendar
         addData(view)
@@ -78,15 +83,14 @@ class Fragment1 : Fragment() {
     @SuppressLint("UseRequireInsteadOfGet")
     private fun setCalendarView(view: View) {
         var sharedPreferences: SharedPreferences = context!!.getSharedPreferences("SharePreferences",Context.MODE_PRIVATE)
-        val calendarAdapter = CalendarAdapter(dayList, month,sharedPreferences)
+        val calendarAdapter = CalendarAdapter(dayList,diaries, month,sharedPreferences)
         val calendarLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(
-            context,
-            7
+                context,
+                7
         )
         rv_calendar.adapter = calendarAdapter
         rv_calendar.layoutManager = calendarLayoutManager
         calendarAdapter.setCallBack {
-//            Toast.makeText(context,"${dayList[it].day}/\${dayList[it].month}/\${dayList[it].year}",Toast.LENGTH_SHORT).show()
             startActivity(Intent(context,CreateActivity::class.java))
         }
     }

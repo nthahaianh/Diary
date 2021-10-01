@@ -9,15 +9,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class CalendarAdapter(
-    private var list: MutableList<MyDate>,
-    private val thisMonth: Int,
-    var sharedPreferences: SharedPreferences
+        private var list: MutableList<MyDate>,
+        private var diaries: MutableList<MyDiary>,
+        private val thisMonth: Int,
+        var sharedPreferences: SharedPreferences
 ) :
-    RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
+        RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
     var position0 = -1
     var position1 = -1
     var position2 = -1
-//    lateinit var sqlHelper:SQLHelper
+    //    lateinit var sqlHelper:SQLHelper
 //    lateinit var diaryList:List<MyDiary>
     lateinit var context: Context
     lateinit var itemClick:(position:Int)->Unit
@@ -28,8 +29,6 @@ class CalendarAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_day1, parent, false)
         context = parent.context
-//        sqlHelper = SQLHelper(context)
-//        diaryList = sqlHelper.getAll()
         val layoutParams = view.layoutParams
         layoutParams.height = (parent.height * 0.16666666).toInt()
         return ViewHolder(view)
@@ -45,25 +44,17 @@ class CalendarAdapter(
             holder.tvDay.setTextColor(Color.rgb(0, 0, 0))
             holder.itemView.setBackgroundResource(R.drawable.background1)
             //doi background khi co nhat ky
-//            for (itemDiary in diaryList){
-//                if(day.day==itemDiary.myDate.day&& day.month==itemDiary.myDate.month && day.year==itemDiary.myDate.year){
-//                    holder.itemView.setBackgroundResource(R.drawable.background5)
-//                }
-//            }
+            for (itemDiary in diaries){
+                if(day.day==itemDiary.myDate.day&& day.month==itemDiary.myDate.month && day.year==itemDiary.myDate.year){
+                    holder.itemView.setBackgroundResource(R.drawable.background5)
+                }
+            }
         }
         if (position == position1) {
             holder.itemView.setBackgroundResource(R.drawable.background3)
-//        } else if (position == position2) {
-//            holder.tvDay.setBackgroundColor(
-//                Color.rgb(
-//                    java.util.Random().nextInt(255),
-//                    java.util.Random().nextInt(255),
-//                    java.util.Random().nextInt(255)
-//                )
-//            )
         } else if (day.year == sharedPreferences.getInt("spYear", 0)
-            && day.month == sharedPreferences.getInt("spMonth", 0)
-            && day.day == sharedPreferences.getInt("spDay", 0)
+                && day.month == sharedPreferences.getInt("spMonth", 0)
+                && day.day == sharedPreferences.getInt("spDay", 0)
         ) {
             holder.tvDay.setBackgroundResource(R.drawable.background3)
         }

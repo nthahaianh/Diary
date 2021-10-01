@@ -81,6 +81,10 @@ class MainActivity : AppCompatActivity() {
             }
             popupMenu.show()
         }
+
+        main_add.setOnClickListener {
+            startActivity(Intent(baseContext,CreateActivity::class.java)) }
+
         var listFragment: MutableList<Fragment1> = mutableListOf()
         listFragment.add(Fragment1().newInstance(startWeek, month, year))
         listFragment.add(Fragment1().newInstance(startWeek, month, year))
@@ -128,15 +132,6 @@ class MainActivity : AppCompatActivity() {
     }
     private fun restore() {
         var path = filesDir
-        val fileName = "data.csv"
-
-        //test 1
-//        var fileIn = File(path, fileName)
-//        println(fileIn.canRead())
-//        var lines:List<String> = fileIn.readLines()
-//        lines.forEach { item-> println(item)}
-
-        //test2
         var fileReader= FileReader("$path/data.csv")
         var lines:List<String> =  fileReader.readLines()
         try {
@@ -155,33 +150,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun backup(diaryList: MutableList<MyDiary>) {
-        //test 1
-//        var path = filesDir
-//        val fileName = "data.csv"
-//
-//        var fileOut = File(path, fileName)
-//        println(fileOut.canWrite())
-//        Log.e("Path", "$path")
-//        fileOut.delete()
-//        fileOut.createNewFile()
-//        try {
-//            for (diary in diaryList) {
-//                fileOut.appendText(diary.time)
-//                fileOut.appendText(",")
-//                fileOut.appendText(diary.myDate.toString())
-//                fileOut.appendText(",")
-//                fileOut.appendText(diary.title)
-//                fileOut.appendText(",")
-//                fileOut.appendText(diary.content)
-//                fileOut.appendText("\n")
-//            }
-//            println("Write CSV successfully!")
-//        } catch (e: Exception) {
-//            println("Writing CSV error!")
-//            e.printStackTrace()
-//        }
-
-        // test 2
         var fileWriter: FileWriter? = null
         var path = filesDir
         try {
@@ -201,7 +169,7 @@ class MainActivity : AppCompatActivity() {
                 fileWriter.append(diary.content)
                 fileWriter.append('\n')
             }
-            println("Write CSV successfully!")
+            Toast.makeText(this,"Backup successfully!", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             println("Writing CSV error!")
             e.printStackTrace()

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:background="@color/white"
+    tools:context=".CreateActivity">
+
+    <EditText
+        android:id="@+id/create_etTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_sticky_note"
+        android:drawableTint="@color/black"
+        android:hint="Title"
+        android:textColor="@color/black"
+        android:textColorHint="@color/grey_hint"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/create_tvDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:text="00/00/0000"
+        app:layout_constraintTop_toBottomOf="@id/create_etTitle"/>
+    <EditText
+        android:id="@+id/create_etContent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:backgroundTint="#00000000"
+        android:gravity="top|left"
+        android:layout_margin="5dp"
+        android:hint="Content"
+        android:textColor="@color/black"
+        android:textColorHint="@color/grey_hint"
+        app:layout_constraintTop_toBottomOf="@+id/create_tvDate"
+        app:layout_constraintBottom_toTopOf="@+id/create_btnSave"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/create_btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="15dp"
+        android:textColor="@color/black"
+        android:background="@drawable/background"
+        android:text="Save"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

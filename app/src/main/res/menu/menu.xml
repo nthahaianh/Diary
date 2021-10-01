@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_all_diary"
+        android:title="All diary"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_create_password"
+        android:title="Set password"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_remove_password"
+        android:title="Remove password"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_backup"
+        android:title="Backup"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_restore"
+        android:title="Restore"
+        app:showAsAction="never" />
+</menu>

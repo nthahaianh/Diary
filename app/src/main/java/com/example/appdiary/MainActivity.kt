@@ -24,6 +24,8 @@ import kotlinx.android.synthetic.main.dialog_password.*
 import java.io.FileReader
 import java.io.FileWriter
 import java.io.IOException
+import java.net.URLDecoder
+import java.net.URLEncoder
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -138,8 +140,8 @@ class MainActivity : AppCompatActivity() {
             sqlHelper.deleteTable()
             lines.forEach {
                 var items : List<String> = it.split(",")
-                var myDate = MyDate(items[1].toInt(), items[2].toInt(), items[3].toInt())
-                var newDiary = MyDiary(items[0], myDate, items[4], items[5])
+                var myDate = MyDate(decode(items[1]).toInt(),decode(items[2]).toInt(), decode(items[3]).toInt())
+                var newDiary = MyDiary(decode(items[0]), myDate, decode(items[4]), decode(items[5]))
                 sqlHelper.insertUser(newDiary)
             }
             Toast.makeText(this,"Restore successfully!", Toast.LENGTH_SHORT).show()
@@ -156,17 +158,17 @@ class MainActivity : AppCompatActivity() {
             fileWriter = FileWriter("$path/data.csv")
 
             for (diary in diaryList) {
-                fileWriter.append(diary.time)
+                fileWriter.append(encode(diary.time))
                 fileWriter.append(',')
-                fileWriter.append(diary.myDate.year.toString())
+                fileWriter.append(encode(diary.myDate.year.toString()))
                 fileWriter.append(',')
-                fileWriter.append(diary.myDate.month.toString())
+                fileWriter.append(encode(diary.myDate.month.toString()))
                 fileWriter.append(',')
-                fileWriter.append(diary.myDate.day.toString())
+                fileWriter.append(encode(diary.myDate.day.toString()))
                 fileWriter.append(',')
-                fileWriter.append(diary.title)
+                fileWriter.append(encode(diary.title))
                 fileWriter.append(',')
-                fileWriter.append(diary.content)
+                fileWriter.append(encode(diary.content))
                 fileWriter.append('\n')
             }
             Toast.makeText(this,"Backup successfully!", Toast.LENGTH_SHORT).show()
@@ -182,6 +184,15 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
         }
+    }
+
+    fun encode(str: String):String {
+        var charset = "UTF-8"
+        return URLEncoder.encode(str,charset)
+    }
+    fun decode(str: String):String{
+        var charset = "UTF-8"
+        return URLDecoder.decode(str,charset)
     }
 
     private fun setTitleView() {

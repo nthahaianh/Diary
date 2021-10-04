@@ -7,5 +7,4 @@ public class SQLText {
     static final String T_DIARY_MONTH= "month";
     static final String T_DIARY_TITLE = "title";
     static final String T_DIARY_CONTENT = "content";
-
 }

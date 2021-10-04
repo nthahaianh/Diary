@@ -38,7 +38,7 @@ class CreateActivity : AppCompatActivity() {
             val time: String = df.format(Calendar.getInstance().time)
             val myDate = MyDate(year,month,day)
             val newDiary= MyDiary(time,myDate,create_etTitle.text.toString(),create_etContent.text.toString())
-            sqlHelper.insertUser(newDiary)
+            sqlHelper.insertDiary(newDiary)
             startActivity(Intent(this,MainActivity::class.java))
             finishAffinity()
         }

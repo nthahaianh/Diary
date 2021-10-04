@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.appdiary.Model.MyDate
 import com.example.appdiary.Model.MyDiary
+import java.lang.String
 
 class SQLHelper(context: Context?) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
     override fun onCreate(db: SQLiteDatabase) {
@@ -27,7 +28,7 @@ class SQLHelper(context: Context?) : SQLiteOpenHelper(context, DB_NAME, null, DB
         }
     }
 
-    fun insertUser(diary: MyDiary) {
+    fun insertDiary(diary: MyDiary) {
         val sqLiteDatabase = writableDatabase
         val contentValues = ContentValues()
         contentValues.put(SQLText.T_DIARY_ID, diary.time)
@@ -72,6 +73,29 @@ class SQLHelper(context: Context?) : SQLiteOpenHelper(context, DB_NAME, null, DB
         sqLiteDatabase.delete(DB_TABLE_DIARY, null, null)
     }
 
+    fun updateDiary(diary: MyDiary) {
+        val sqLiteDatabase = writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(SQLText.T_DIARY_ID, diary.time)
+        contentValues.put(SQLText.T_DIARY_YEAR, diary.myDate.year)
+        contentValues.put(SQLText.T_DIARY_MONTH, diary.myDate.month)
+        contentValues.put(SQLText.T_DIARY_DAY, diary.myDate.day)
+        contentValues.put(SQLText.T_DIARY_TITLE, diary.title)
+        contentValues.put(SQLText.T_DIARY_CONTENT, diary.content)
+        sqLiteDatabase.update(
+            DB_TABLE_DIARY, contentValues, "${SQLText.T_DIARY_ID}=?", arrayOf(
+                String.valueOf(diary.time)
+            )
+        )
+    }
+
+    fun deleteDiary(key: kotlin.String) {
+        val sqLiteDatabase = writableDatabase
+        sqLiteDatabase.delete(DB_TABLE_DIARY,
+            "${SQLText.T_DIARY_ID}=?",
+            arrayOf(key)
+        )
+    }
     companion object {
         const val DB_NAME = "Diary.db"
         const val DB_TABLE_DIARY = "Diary"

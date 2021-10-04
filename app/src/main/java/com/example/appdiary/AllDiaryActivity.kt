@@ -3,6 +3,7 @@ package com.example.appdiary
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_all_diary.*
 class AllDiaryActivity : AppCompatActivity() {
     lateinit var sqlHelper: SQLHelper
     var diaryList: MutableList<MyDiary> = mutableListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_diary)
@@ -27,12 +29,15 @@ class AllDiaryActivity : AppCompatActivity() {
         all_diary_rv.layoutManager = layoutManager
         adapter.setCallBack {
             var intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra("detail_time", diaryList[it].time)
             intent.putExtra("detail_day", diaryList[it].myDate.toString())
             intent.putExtra("detail_title", diaryList[it].title)
             intent.putExtra("detail_content", diaryList[it].content)
             startActivity(intent)
+            finish()
         }
         btnBack.setOnClickListener {
+            startActivity(Intent(baseContext, MainActivity::class.java))
             finish()
         }
         btnShow.setOnClickListener {
@@ -69,5 +74,10 @@ class AllDiaryActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        startActivity(Intent(baseContext, MainActivity::class.java))
+        finish()
     }
 }

@@ -6,14 +6,17 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,13 +29,12 @@ import com.example.appdiary.Model.MyDiary
 import com.example.appdiary.SQLite.SQLHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_password.*
-import java.io.FileReader
-import java.io.FileWriter
-import java.io.IOException
+import java.io.*
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.util.*
 
+@RequiresApi(Build.VERSION_CODES.O)
 class MainActivity : AppCompatActivity() {
     private var startWeek = 1
     private var month = 0
@@ -51,7 +53,10 @@ class MainActivity : AppCompatActivity() {
         year = calendar.get(Calendar.YEAR)
         main_tvMonthYear?.text = "${month + 1}/$year"
 
-        var sharedPreferences: SharedPreferences = this.getSharedPreferences("SharePreferences", Context.MODE_PRIVATE)
+        var sharedPreferences: SharedPreferences = this.getSharedPreferences(
+            "SharePreferences",
+            Context.MODE_PRIVATE
+        )
         val editor = sharedPreferences.edit()
         editor?.putInt("spYear", year)
         editor?.putInt("spMonth", month)
@@ -64,7 +69,8 @@ class MainActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener { it ->
                 when(it.itemId){
                     R.id.menu_all_diary -> {
-                        startActivity(Intent(baseContext,AllDiaryActivity::class.java))
+                        startActivity(Intent(baseContext, AllDiaryActivity::class.java))
+                        finish()
                         true
                     }
                     R.id.menu_create_password -> {
@@ -72,16 +78,18 @@ class MainActivity : AppCompatActivity() {
                         true
                     }
                     R.id.menu_remove_password -> {
-                        editor.putBoolean("havePassword",false)
+                        editor.putBoolean("havePassword", false)
                         editor.apply()
-                        Toast.makeText(this,"Done!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Done!", Toast.LENGTH_SHORT).show()
                         true
                     }
-                    R.id.menu_backup->{
+                    R.id.menu_backup -> {
                         backup(sqlHelper.getAll())
                     }
-                    R.id.menu_restore->{
+                    R.id.menu_restore -> {
                         restore()
+                        startActivity(Intent(baseContext, MainActivity::class.java))
+                        finish()
                     }
                 }
                 false
@@ -90,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         main_add.setOnClickListener {
-            startActivity(Intent(baseContext,CreateActivity::class.java)) }
+            startActivity(Intent(baseContext, CreateActivity::class.java)) }
 
         var listFragment: MutableList<Fragment1> = mutableListOf()
         listFragment.add(Fragment1().newInstance(startWeek, month, year))
@@ -139,18 +147,25 @@ class MainActivity : AppCompatActivity() {
     private fun restore() {
         var path = filesDir
         try {
-            var fileReader= FileReader("$path/data.csv")
+            var fileReader = FileReader("$path/data.csv")
             var lines:List<String> =  fileReader.readLines()
             sqlHelper.deleteTable()
             lines.forEach {
                 var items : List<String> = it.split(",")
-                var myDate = MyDate(decode(items[1]).toInt(),decode(items[2]).toInt(), decode(items[3]).toInt())
+                var myDate = MyDate(
+                    decode(items[1]).toInt(),
+                    decode(items[2]).toInt(),
+                    decode(items[3]).toInt()
+                )
                 var newDiary = MyDiary(decode(items[0]), myDate, decode(items[4]), decode(items[5]))
-                sqlHelper.insertUser(newDiary)
+                sqlHelper.insertDiary(newDiary)
             }
-            Toast.makeText(this,"Restore successfully!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Restore successfully!", Toast.LENGTH_SHORT).show()
+        } catch (e: FileNotFoundException) {
+            Toast.makeText(this, "File not found!", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
         } catch (e: Exception) {
-            Toast.makeText(this,"Restore error!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Restore error!", Toast.LENGTH_SHORT).show()
             e.printStackTrace()
         }
     }
@@ -160,7 +175,6 @@ class MainActivity : AppCompatActivity() {
         var path = filesDir
         try {
             fileWriter = FileWriter("$path/data.csv")
-
             for (diary in diaryList) {
                 fileWriter.append(encode(diary.time))
                 fileWriter.append(',')
@@ -175,7 +189,7 @@ class MainActivity : AppCompatActivity() {
                 fileWriter.append(encode(diary.content))
                 fileWriter.append('\n')
             }
-            Toast.makeText(this,"Backup successfully!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Backup successfully!", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             println("Writing CSV error!")
             e.printStackTrace()
@@ -192,11 +206,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun encode(str: String):String {
         var charset = "UTF-8"
-        return URLEncoder.encode(str,charset)
+        return URLEncoder.encode(str, charset)
     }
     private fun decode(str: String):String{
         var charset = "UTF-8"
-        return URLDecoder.decode(str,charset)
+        return URLDecoder.decode(str, charset)
     }
 
     private fun setTitleView() {
@@ -259,7 +273,10 @@ class MainActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.dialog_password)
 
         val window = dialog.window ?: return
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val windowAttributes = window.attributes
         windowAttributes.gravity = Gravity.CENTER
@@ -269,14 +286,25 @@ class MainActivity : AppCompatActivity() {
             dialog.dismiss()
         }
         dialog.dialog_btnConfirm.setOnClickListener {
-            var sharedPreferences: SharedPreferences = this.getSharedPreferences("SharePreferences", Context.MODE_PRIVATE)
+            var sharedPreferences: SharedPreferences = this.getSharedPreferences(
+                "SharePreferences",
+                Context.MODE_PRIVATE
+            )
             val editor = sharedPreferences.edit()
             if (dialog.dialog_etInput.text.toString().isNullOrBlank()){
-                Toast.makeText(baseContext, "Invalid: Password is null or blank!", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    baseContext,
+                    "Invalid: Password is null or blank!",
+                    Toast.LENGTH_LONG
+                ).show()
             }else{
-                Toast.makeText(baseContext, "Password is '${dialog.dialog_etInput.text}'", Toast.LENGTH_LONG).show()
-                editor.putString("spPassword",dialog.dialog_etInput.text.toString())
-                editor.putBoolean("havePassword",true)
+                Toast.makeText(
+                    baseContext,
+                    "Password is '${dialog.dialog_etInput.text}'",
+                    Toast.LENGTH_LONG
+                ).show()
+                editor.putString("spPassword", dialog.dialog_etInput.text.toString())
+                editor.putBoolean("havePassword", true)
                 editor.apply()
                 dialog.dismiss()
             }

@@ -131,7 +131,6 @@ class MainActivity : AppCompatActivity() {
                     viewpager_demo.setCurrentItem(1, false)
                 }
             }
-
         })
 
         addData()
@@ -139,9 +138,9 @@ class MainActivity : AppCompatActivity() {
     }
     private fun restore() {
         var path = filesDir
-        var fileReader= FileReader("$path/data.csv")
-        var lines:List<String> =  fileReader.readLines()
         try {
+            var fileReader= FileReader("$path/data.csv")
+            var lines:List<String> =  fileReader.readLines()
             sqlHelper.deleteTable()
             lines.forEach {
                 var items : List<String> = it.split(",")
